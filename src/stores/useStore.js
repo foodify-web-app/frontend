@@ -5,7 +5,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 
 export const useStore = create((set, get) => ({
-    url: 'https://foodify-server-b0k3.onrender.com',
+    url: 'http://13.202.116.73',
     //url: 'https://cookies-implies-use-phenomenon.trycloudflare.com',
     token: '',
     food_list: [],
@@ -23,7 +23,7 @@ export const useStore = create((set, get) => ({
     fetchFoodList: async () => {
         try {
             const { url, setFoodList } = get();
-            const response = await axios.get(`${url}/api/dish/all`);
+            const response = await axios.get(`${url}/dishes/all`);
             setFoodList(response.data.data);
         } catch (error) {
             console.error('Error fetching food list:', error);
@@ -42,7 +42,7 @@ export const useStore = create((set, get) => ({
 
         set({ cartItems: updatedCart });
 
-        const dish = await axios.get(`${url}/api/dish/${itemId}`, { headers: { token } })
+        const dish = await axios.get(`${url}/dishes/${itemId}`, { headers: { token } })
         toast.success(`${dish.data.data[0].name} added to cart`, {
             icon: '🛒',
             duration: 3000,
@@ -51,7 +51,7 @@ export const useStore = create((set, get) => ({
 
         if (token) {
             try {
-                await axios.post(`${url}/api/cart/add`, { itemId }, { headers: { token } });
+                await axios.post(`${url}/cart/add`, { itemId }, { headers: { token } });
             } catch (error) {
                 console.error('Error adding to cart:', error);
             }
@@ -64,7 +64,7 @@ export const useStore = create((set, get) => ({
         updatedCart[itemId] = updatedCart[itemId] - 1;
         set({ cartItems: updatedCart });
 
-        const dish = await axios.get(`${url}/api/dish/${itemId}`, { headers: { token } })
+        const dish = await axios.get(`${url}/dishes/${itemId}`, { headers: { token } })
         toast.error(`${dish.data.data[0].name} removed from cart`, {
             icon: '🛒',
             duration: 3000,
@@ -72,7 +72,7 @@ export const useStore = create((set, get) => ({
 
         if (token) {
             try {
-                await axios.post(`${url}/api/cart/remove`, { itemId }, { headers: { token } });
+                await axios.post(`${url}/cart/remove`, { itemId }, { headers: { token } });
             } catch (error) {
                 console.error('Error removing from cart:', error);
             }
@@ -82,7 +82,7 @@ export const useStore = create((set, get) => ({
     loadCartData: async () => {
         const { url, userId, token } = get();
         try {
-            const response = await axios.get(`${url}/api/cart/userid/${userId}`, { headers: { token } });
+            const response = await axios.get(`${url}/cart/userid/${userId}`, { headers: { token } });
             set({ cartItems: response.data.cartData });
         } catch (error) {
             console.error('Error loading cart data:', error);
