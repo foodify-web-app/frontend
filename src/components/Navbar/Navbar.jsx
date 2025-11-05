@@ -4,21 +4,27 @@ import { assets } from '../../assets/assets'
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../../stores/useStore';
 import { toast } from 'sonner';
+import axios from 'axios';
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
-  const { getTotalCartAmount, token, setToken, setUserId , resetCart} = useStore();
+  const { getTotalCartAmount, token, setToken, setUserId, resetCart, url } = useStore();
   const navigate = useNavigate();
-  const logout = () => {
+  const logout = async () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     setToken("");
     setUserId("");
     resetCart();
-    navigate("/");
-    toast.success("Logout successful", {
+
+    const res = await axios.post(`${url}/users/logout`, {}, { headers: { token } });
+    if (res.data.success) {
+      toast.success("Logout successful", {
         icon: '✅',
         duration: 3000,
       });
+      navigate("/");
+
+    }
   }
   return (
     <div className='navbar'>
@@ -48,7 +54,7 @@ const Navbar = ({ setShowLogin }) => {
               <hr />
               <li>
                 <img src={assets.logout_icon} alt="" />
-                <p onClick={logout}>Logout</p>
+                <p onClick={async () => await logout()}>Logout</p>
               </li>
             </ul>
           </div>}

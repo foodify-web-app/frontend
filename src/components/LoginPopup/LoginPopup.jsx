@@ -4,6 +4,9 @@ import { assets } from '../../assets/assets'
 import axios from "axios";
 import { useStore } from '../../stores/useStore';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router';
+
+
 const LoginPopup = ({ setShowLogin }) => {
   const { url, setToken, setUserId } = useStore();
   const [currState, setCurrState] = useState("Login")
@@ -12,6 +15,8 @@ const LoginPopup = ({ setShowLogin }) => {
     email: "",
     password: ""
   })
+  const navigate = useNavigate();
+
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
@@ -40,6 +45,7 @@ const LoginPopup = ({ setShowLogin }) => {
         icon: '✅',
         duration: 3000,
       });
+      navigate('/');
     }
     else {
       toast.error(response.data.message, {

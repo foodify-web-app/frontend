@@ -14,7 +14,7 @@ const Home = () => {
     setFoodList(food_list)
     setToken(localStorage.getItem('token'))
     // loadCartData()
-  }, [userId])
+  }, [])
 
 
   return (

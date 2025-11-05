@@ -5,7 +5,8 @@ import axios from 'axios';
 import { toast } from 'sonner';
 
 export const useStore = create((set, get) => ({
-    url: 'http://13.202.116.73',
+    // url: 'http://13.202.116.73',
+    url : "http://localhost:80",
     //url: 'https://cookies-implies-use-phenomenon.trycloudflare.com',
     token: '',
     food_list: [],
