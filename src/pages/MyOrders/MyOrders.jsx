@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 // import './MyOrders.css'
-import axios from 'axios';
-import { useStore } from '../../stores/useStore';
+
+import { useStore, api } from '../../stores/useStore';
 import { ChevronDown, ChevronUp, Clock, CheckCircle, Truck, AlertCircle } from 'lucide-react';
 
 const MyOrders = () => {
-    const { url, token, userId } = useStore();
+    const { orderUrl, token, userId } = useStore();
     const [data, setData] = useState([]);
 
     const fetchOrders = async () => {
-        const response = await axios.get(url + "/orders/userorders/" + userId, { headers: { token } })
+        const response = await api.get(orderUrl + "/userorders/" + userId)
+        console.log(response.data)
         setData(response.data.data);
     }
 

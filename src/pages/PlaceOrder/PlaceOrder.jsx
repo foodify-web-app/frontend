@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './PlaceOrder.css'
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useStore } from '../../stores/useStore';
+import { useStore, api } from '../../stores/useStore';
 const PlaceOrder = () => {
-  const { getTotalCartAmount, token, food_list, cartItems, url, userId } = useStore();
+  const { getTotalCartAmount, token, food_list, cartItems, orderUrl, userId } = useStore();
 
   const [data, setData] = useState({
     firstName: "",
@@ -40,7 +39,7 @@ const PlaceOrder = () => {
       amount: getTotalCartAmount() + 100, // Adding delivery charges
       userId: userId
     }
-    let response = await axios.post(url + "/orders/place", orderData, { headers: { token } });
+    let response = await api.post(orderUrl + "/place", orderData);
     if (response.data.success) {
       const { session_url } = response.data;
       window.location.replace(session_url);

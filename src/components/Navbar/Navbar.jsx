@@ -2,12 +2,11 @@ import React, { useState } from 'react'
 import './Navbar.css'
 import { assets } from '../../assets/assets'
 import { Link, useNavigate } from 'react-router-dom';
-import { useStore } from '../../stores/useStore';
+import { useStore, api } from '../../stores/useStore';
 import { toast } from 'sonner';
-import axios from 'axios';
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
-  const { getTotalCartAmount, token, setToken, setUserId, resetCart, url } = useStore();
+  const { getTotalCartAmount, token, setToken, setUserId, resetCart, authUrl } = useStore();
   const navigate = useNavigate();
   const logout = async () => {
     localStorage.removeItem("token");
@@ -16,7 +15,7 @@ const Navbar = ({ setShowLogin }) => {
     setUserId("");
     resetCart();
 
-    const res = await axios.post(`${url}/users/logout`, {}, { headers: { token } });
+    const res = await api.post(`${authUrl}/logout`, {}, { headers: { token } });
     if (res.data.success) {
       toast.success("Logout successful", {
         icon: '✅',
