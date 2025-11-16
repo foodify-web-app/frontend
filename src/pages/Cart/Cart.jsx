@@ -7,7 +7,9 @@ const Cart = () => {
   const { cartItems, food_list, removeFromCart, getTotalCartAmount, loadCartData, userId } = useStore()
 
   useEffect(() => {
-    loadCartData()
+    if (userId) {
+      loadCartData()
+    }
   }, [userId])
   const navigate = useNavigate();
   return (

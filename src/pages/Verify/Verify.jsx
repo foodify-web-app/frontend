@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import './Verify.css'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import axios from 'axios';
-import { useStore } from '../../stores/useStore';
+import { useStore, api } from '../../stores/useStore';
 const Verify = () => {
     const [searchParams] = useSearchParams();
     const success = searchParams.get("success");
@@ -12,7 +11,7 @@ const Verify = () => {
     const navigate = useNavigate();
 
     const verifyPayment = async () => {
-        const response = await axios.post(url + "/orders/verify", { success, orderId });
+        const response = await api.post(url + "/verify", { success, orderId });
         if (response.data.success) {
             navigate("/myorders");
         }

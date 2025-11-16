@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import './LoginPopup.css'
 import { assets } from '../../assets/assets'
-import axios from "axios";
-import { useStore } from '../../stores/useStore';
+import { useStore, api } from '../../stores/useStore';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router';
 
 
 const LoginPopup = ({ setShowLogin }) => {
-  const { url, setToken, setUserId } = useStore();
+  const { authUrl, userUrl, setToken, setUserId } = useStore();
   const [currState, setCurrState] = useState("Login")
   const [data, setData] = useState({
     name: "",
@@ -26,14 +25,15 @@ const LoginPopup = ({ setShowLogin }) => {
 
   const onLogin = async (event) => {
     event.preventDefault();
-    let newUrl = url;
+    let newAuthUrl = authUrl;
+    let newUserUrl = userUrl;
     if (currState === "Login") {
-      newUrl += "/users/login"
+      newAuthUrl += "/login"
     }
     else {
-      newUrl += "/users/register"
+      newUserUrl += "/register"
     }
-    const response = await axios.post(newUrl, data);
+    const response = await api.post(currState === "Login" ? newAuthUrl : newUserUrl, data);
 
     if (response.data.success) {
       setToken(response.data.token);
